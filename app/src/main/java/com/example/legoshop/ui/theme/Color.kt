@@ -1,4 +1,4 @@
-package com.example.legoshopapp.ui.theme
+package com.example.legoshop.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -1,4 +1,4 @@
-package com.example.legoshopapp.login
+package com.example.legoshop.presentation.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -23,8 +23,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.legoshopapp.R
-import com.example.legoshopapp.ui.theme.LegoShopAppTheme
+import com.example.legoshop.R
+import com.example.legoshop.ui.theme.LegoShopAppTheme
 
 @Composable
 fun LoginScreen(modifier: Modifier = Modifier) {
