@@ -1,4 +1,4 @@
-package com.example.legoshopapp
+package com.example.legoshop
 
 import org.junit.Test
 

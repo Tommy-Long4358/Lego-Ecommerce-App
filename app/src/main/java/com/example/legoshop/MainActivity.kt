@@ -1,4 +1,4 @@
-package com.example.legoshopapp
+package com.example.legoshop
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -7,9 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.example.legoshopapp.ui.home.HomeScreen
-import com.example.legoshopapp.ui.login.LoginScreen
-import com.example.legoshopapp.ui.theme.LegoShopAppTheme
+import com.example.legoshop.presentation.home.HomeScreen
+import com.example.legoshop.ui.theme.LegoShopAppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

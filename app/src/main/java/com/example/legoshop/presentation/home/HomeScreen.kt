@@ -39,14 +39,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.legoshop.presentation.navigation.NavigationDestination
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.legoshop.ui.theme.LegoShopAppTheme
 import com.example.legoshop.R
-
-object HomeDestination : NavigationDestination {
-    override val route = "home"
-    override val titleRes = "Home"
-}
+import com.example.legoshop.presentation.ViewModelFactoryHelper
 
 /** TODO
  * - A Lazy-style list can't be nested in another lazy list so another way must be found in achieving this.
@@ -57,9 +53,10 @@ object HomeDestination : NavigationDestination {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
-    navigateToItemDetails: () -> Unit,
+    viewModel: HomeViewModel = viewModel(factory = ViewModelFactoryHelper.Factory),
     modifier: Modifier = Modifier
 ) {
+    val homeUiState = viewModel.state
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold (
@@ -73,8 +70,8 @@ fun HomeScreen(
                 .verticalScroll(rememberScrollState())
         ) {
             HomeBody(
-                onItemClick =  navigateToItemDetails,
                 contentPadding = innerPadding,
+                state = homeUiState,
                 modifier = Modifier.fillMaxSize()
             )
         }
@@ -83,8 +80,8 @@ fun HomeScreen(
 
 @Composable
 fun HomeBody(
-    onItemClick: () -> Unit,
     contentPadding: PaddingValues = PaddingValues(0.dp),
+    state: HomeUiState,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -93,20 +90,25 @@ fun HomeBody(
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         SearchBar()
+
+        /*
         SectionRow(
             sectionTitle = "Browse by Theme",
             section = "theme",
-            onItemClick = {},
             modifier = Modifier.padding(start = 8.dp)
         )
         SectionRow(
             sectionTitle = "Your Recent Searches",
             section = "search",
-            onItemClick = onItemClick,
             modifier = Modifier.padding(start = 8.dp)
         )
 
-        // RecommendedSection(modifier = Modifier.padding(start = 8.dp))
+         */
+
+        RecommendedSection(
+            modifier = Modifier.padding(start = 8.dp),
+            state = state
+        )
     }
 }
 
@@ -136,7 +138,6 @@ fun SearchBar(modifier: Modifier = Modifier) {
 fun SectionRow(
     sectionTitle: String,
     section: String,
-    onItemClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -148,6 +149,7 @@ fun SectionRow(
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+            /*
             items(ItemsRepository.items) {
                 when(section) {
                     "theme" -> ThemeCard(
@@ -165,13 +167,18 @@ fun SectionRow(
                     )
                 }
             }
+
+             */
         }
     }
 }
 
 @Composable
-fun RecommendedSection(modifier: Modifier = Modifier) {
-    val items = ItemsRepository.items
+fun RecommendedSection(
+    modifier: Modifier = Modifier,
+    state: HomeUiState
+) {
+    val itemListings = state.itemListings
     Column(
         modifier = modifier,
     ) {
@@ -180,15 +187,9 @@ fun RecommendedSection(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(20.dp))
 
-        (0..<ItemsRepository.items.size).forEach() { item ->
-            ItemCard(
-                title = items[item].name,
-                price = items[item].price,
-                img = items[item].imgSrc,
-                onItemClick = {},
-                modifier = Modifier
-                    .width(186.dp)
-                    .height(180.dp)
+        if (itemListings.isEmpty()) {
+            Text(
+                text = "Total number of item listings: " + itemListings.size.toString()
             )
         }
     }
@@ -287,6 +288,6 @@ fun ItemCard(
 @Composable
 fun HomeScreenPreview() {
     LegoShopAppTheme {
-        HomeScreen(navigateToItemDetails = {})
+        HomeScreen()
     }
 }

@@ -1,4 +1,4 @@
-package com.example.legoshop.presentation.itemdetails
+package com.example.legoshop.presentation.item
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -25,13 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.legoshop.R
 import com.example.legoshop.presentation.home.HomeTopAppBar
-import com.example.legoshop.presentation.navigation.NavigationDestination
 import com.example.legoshop.ui.theme.LegoShopAppTheme
-
-object ItemDetailsDestination: NavigationDestination {
-    override val route = "item"
-    override val titleRes = "Item Details"
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
