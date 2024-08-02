@@ -5,8 +5,7 @@ package com.example.legoshop.domain.model
  * Ensures that presentation layer does not access data layer.
  */
 data class ItemListing(
-    val title: String,
+    val title: String = "",
     val price: Double,
-    val seller: String,
-    val description: String,
+    val description: String = "",
 )

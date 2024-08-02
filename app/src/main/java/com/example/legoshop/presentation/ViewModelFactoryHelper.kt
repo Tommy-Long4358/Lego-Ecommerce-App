@@ -6,14 +6,17 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.legoshop.ItemApplication
 import com.example.legoshop.presentation.home.HomeViewModel
+import com.example.legoshop.presentation.item.ItemCreateViewModel
 
 
 object ViewModelFactoryHelper {
     val Factory = viewModelFactory {
         initializer {
-            HomeViewModel(
-                itemApplication().appModule.itemRepository
-            )
+            HomeViewModel(itemApplication().appModule.itemRepository)
+        }
+
+        initializer {
+            ItemCreateViewModel(itemApplication().appModule.itemRepository)
         }
     }
 }

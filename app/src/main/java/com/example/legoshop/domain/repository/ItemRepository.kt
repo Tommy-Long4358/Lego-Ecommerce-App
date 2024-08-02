@@ -5,7 +5,9 @@ import com.example.legoshop.domain.model.ItemListing
 import kotlinx.coroutines.flow.Flow
 
 interface ItemRepository {
-    suspend fun getAllItemListings(): List<ItemListing>
+    fun getAllItemListings(): Flow<List<ItemListing>>
 
     suspend fun getNumOfItemListings(): Int
+
+    suspend fun insertItemListing(itemListing: ItemListing)
 }

@@ -12,7 +12,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -34,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,6 +47,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.legoshop.ui.theme.LegoShopAppTheme
 import com.example.legoshop.R
+import com.example.legoshop.domain.model.ItemListing
 import com.example.legoshop.presentation.ViewModelFactoryHelper
 
 /** TODO
@@ -56,7 +62,6 @@ fun HomeScreen(
     viewModel: HomeViewModel = viewModel(factory = ViewModelFactoryHelper.Factory),
     modifier: Modifier = Modifier
 ) {
-    val homeUiState = viewModel.state
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold (
@@ -67,11 +72,10 @@ fun HomeScreen(
     ) { innerPadding ->
         Column(
             modifier = Modifier
-                .verticalScroll(rememberScrollState())
         ) {
             HomeBody(
                 contentPadding = innerPadding,
-                state = homeUiState,
+                homeUiState = viewModel.homeUiState,
                 modifier = Modifier.fillMaxSize()
             )
         }
@@ -81,7 +85,7 @@ fun HomeScreen(
 @Composable
 fun HomeBody(
     contentPadding: PaddingValues = PaddingValues(0.dp),
-    state: HomeUiState,
+    homeUiState: HomeUiState,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -106,8 +110,8 @@ fun HomeBody(
          */
 
         RecommendedSection(
-            modifier = Modifier.padding(start = 8.dp),
-            state = state
+            modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+            itemListings = homeUiState.itemListings
         )
     }
 }
@@ -176,9 +180,8 @@ fun SectionRow(
 @Composable
 fun RecommendedSection(
     modifier: Modifier = Modifier,
-    state: HomeUiState
+    itemListings: List<ItemListing>
 ) {
-    val itemListings = state.itemListings
     Column(
         modifier = modifier,
     ) {
@@ -188,9 +191,23 @@ fun RecommendedSection(
         Spacer(modifier = Modifier.height(20.dp))
 
         if (itemListings.isEmpty()) {
-            Text(
-                text = "Total number of item listings: " + itemListings.size.toString()
-            )
+            Text(text = "No available listings")
+        }
+        else {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                items(itemListings) {
+                    ItemCard(
+                        title = it.title,
+                        price = "$" + it.price.toString(),
+                        img = R.drawable.listing_4,
+                        onItemClick = {}
+                    )
+                }
+            }
         }
     }
 }
@@ -256,16 +273,16 @@ fun ItemCard(
 ) {
     Column(
         modifier = Modifier
-            .width(120.dp)
-            .clickable(onClick = onItemClick)
+            .size(180.dp)
+            .clickable(onClick = onItemClick),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Card(
             modifier = modifier
         ) {
             Image(
                 painterResource(id = img),
-                contentDescription = "",
-                contentScale = ContentScale.FillHeight
+                contentDescription = ""
             )
         }
         Text(

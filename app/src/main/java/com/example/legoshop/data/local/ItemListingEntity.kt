@@ -9,6 +9,5 @@ data class ItemListingEntity(
     val id: Int = 0,
     val title: String,
     val price: Double,
-    val seller: String,
     val description: String,
 )

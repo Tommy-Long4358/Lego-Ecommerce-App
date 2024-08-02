@@ -20,7 +20,7 @@ interface ItemListingDao {
     suspend fun delete(itemListing: ItemListingEntity)
 
     @Query("SELECT * FROM listings")
-    fun getAllItemListings(): List<ItemListingEntity>
+    fun getAllItemListings(): Flow<List<ItemListingEntity>>
 
     @Query("SELECT COUNT(*) FROM listings")
     fun getNumOfItemListings(): Int
