@@ -29,7 +29,6 @@ class HomeViewModel (
         viewModelScope.launch {
             val listings = repository.getAllItemListings().first()
 
-
             homeUiState = homeUiState.copy(
                 itemListings = listings
             )

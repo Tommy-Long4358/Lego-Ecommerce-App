@@ -2,12 +2,17 @@ package com.example.legoshop.presentation.home
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -34,7 +39,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -68,17 +75,12 @@ fun HomeScreen(
         topBar = {
             HomeTopAppBar(title = "BrickStud")
         },
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) { innerPadding ->
-        Column(
-            modifier = Modifier
-        ) {
-            HomeBody(
-                contentPadding = innerPadding,
-                homeUiState = viewModel.homeUiState,
-                modifier = Modifier.fillMaxSize()
-            )
-        }
+        HomeBody(
+            contentPadding = innerPadding,
+            homeUiState = viewModel.homeUiState,
+        )
     }
 }
 
@@ -88,31 +90,30 @@ fun HomeBody(
     homeUiState: HomeUiState,
     modifier: Modifier = Modifier
 ) {
-    Column(
+    LazyColumn(
         modifier = modifier
-            .padding(contentPadding),
-        verticalArrangement = Arrangement.spacedBy(20.dp)
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        SearchBar()
+        item {
+            SearchBar()
+        }
 
-        /*
-        SectionRow(
-            sectionTitle = "Browse by Theme",
-            section = "theme",
-            modifier = Modifier.padding(start = 8.dp)
-        )
-        SectionRow(
-            sectionTitle = "Your Recent Searches",
-            section = "search",
-            modifier = Modifier.padding(start = 8.dp)
-        )
+        item {
+            RecentSearchSection(
+                sectionTitle = "Your Recent Searches",
+                recentSearches = homeUiState.itemListings,
+                modifier = Modifier.padding(start = 8.dp)
+            )
+        }
 
-         */
+        item {
+            RecommendedSection(
+                modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+                itemListings = homeUiState.itemListings
+            )
+        }
 
-        RecommendedSection(
-            modifier = Modifier.padding(start = 8.dp, end = 8.dp),
-            itemListings = homeUiState.itemListings
-        )
     }
 }
 
@@ -132,47 +133,39 @@ fun SearchBar(modifier: Modifier = Modifier) {
             )
         },
         modifier = modifier
-            .width(390.dp)
+            .width(400.dp)
             .height(64.dp)
             .padding(start = 8.dp, end = 8.dp)
     )
 }
 
 @Composable
-fun SectionRow(
+fun RecentSearchSection(
     sectionTitle: String,
-    section: String,
+    recentSearches: List<ItemListing>,
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(text = sectionTitle)
+        TitleSection(sectionTitle = sectionTitle)
 
         LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.width(392.dp)
         ) {
-            /*
-            items(ItemsRepository.items) {
-                when(section) {
-                    "theme" -> ThemeCard(
-                        modifier = Modifier
-                            .width(100.dp)
-                            .height(60.dp),
-                    )
-                    "search" -> ItemCard(
-                        title = it.name,
-                        price = it.price,
-                        img = it.imgSrc,
-                        modifier = Modifier
-                            .size(120.dp),
-                        onItemClick = onItemClick
-                    )
-                }
+            items(recentSearches) { item ->
+                ItemCard(
+                    title = item.title,
+                    price = item.price.toString(),
+                    img = R.drawable.listing_1,
+                    modifier = Modifier
+                        .height(130.dp)
+                        .width(170.dp),
+                    onItemClick = {}
+                )
             }
-
-             */
         }
     }
 }
@@ -183,12 +176,11 @@ fun RecommendedSection(
     itemListings: List<ItemListing>
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(
-            text = "Recommended For You"
-        )
-        Spacer(modifier = Modifier.height(20.dp))
+        TitleSection(sectionTitle = "Recommended for You")
 
         if (itemListings.isEmpty()) {
             Text(text = "No available listings")
@@ -196,19 +188,91 @@ fun RecommendedSection(
         else {
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+                modifier = Modifier.height(2000.dp)
             ) {
                 items(itemListings) {
                     ItemCard(
                         title = it.title,
                         price = "$" + it.price.toString(),
                         img = R.drawable.listing_4,
-                        onItemClick = {}
+                        onItemClick = {},
+                        modifier = Modifier.size(200.dp)
                     )
                 }
             }
         }
+    }
+}
+
+@Composable
+fun ItemCard(
+    title: String,
+    price: String,
+    img: Int,
+    onItemClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = Modifier.clickable(onClick = onItemClick)
+    ) {
+        Card(
+            modifier = modifier
+        ) {
+            Image(
+                painterResource(id = img),
+                contentDescription = "",
+                contentScale = ContentScale.Crop
+            )
+        }
+        Text(
+            text = title,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            fontSize = 12.sp,
+            lineHeight = 16.sp,
+            modifier = Modifier.padding(start = 4.dp)
+        )
+        Text(
+            text = price,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(start = 4.dp)
+        )
+    }
+}
+
+@Composable
+fun ThemeCard(modifier: Modifier = Modifier) {
+    Card(
+        modifier = modifier
+    ) {
+        Image(
+            painterResource(id = R.drawable.star_wars_logo),
+            contentDescription = "",
+            contentScale = ContentScale.Crop
+        )
+    }
+}
+
+@Composable
+fun TitleSection(
+    sectionTitle: String,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = sectionTitle,
+            modifier = Modifier.weight(1f)
+        )
+        Text(
+            text = "see all",
+            modifier = Modifier.padding(top = 4.dp, end = 4.dp),
+            fontSize = 12.sp
+        )
     }
 }
 
@@ -248,63 +312,17 @@ fun HomeTopAppBar(
     )
 }
 
-
-@Composable
-fun ThemeCard(modifier: Modifier = Modifier) {
-    Card(
-        modifier = modifier
-    ) {
-        Image(
-            painterResource(id = R.drawable.star_wars_logo),
-            contentDescription = "",
-            contentScale = ContentScale.Crop
-        )
-    }
-}
-
-
-@Composable
-fun ItemCard(
-    title: String,
-    price: String,
-    img: Int,
-    onItemClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = Modifier
-            .size(180.dp)
-            .clickable(onClick = onItemClick),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        Card(
-            modifier = modifier
-        ) {
-            Image(
-                painterResource(id = img),
-                contentDescription = ""
-            )
-        }
-        Text(
-            text = title,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
-            fontSize = 12.sp,
-            lineHeight = 16.sp,
-            modifier = Modifier.padding(start = 4.dp)
-        )
-        Text(
-            text = price,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(start = 4.dp)
-        )
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
     LegoShopAppTheme {
-        HomeScreen()
+        val homeUiState = HomeUiState(
+            listOf(ItemListing("Jedi Bob Starfighter", 39.99, "JEDI BOB!"),
+                ItemListing("Dark Millennium Falcon", 179.99, "DARTH JAR JAR!"),
+                ItemListing("Kessel Run Millennium Falcon", 179.99, "NEVER TELL ME THE ODDS!"),
+                ItemListing("Captain Rex Y-Wing Microfighter", 14.99, "ZOOOMMMM"))
+        )
+
+        HomeBody(homeUiState = homeUiState)
     }
 }
