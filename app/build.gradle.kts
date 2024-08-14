@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("com.google.devtools.ksp") version "1.9.20-1.0.14"
+    id("com.google.gms.google-services")
 }
 
 kotlin {
@@ -82,6 +83,7 @@ dependencies {
 
     //Room
     implementation("androidx.room:room-runtime:${rootProject.extra["room_version"]}")
+    implementation("com.google.firebase:firebase-auth:23.0.0")
     ksp("androidx.room:room-compiler:${rootProject.extra["room_version"]}")
     implementation("androidx.room:room-ktx:${rootProject.extra["room_version"]}")
 

@@ -1,4 +1,4 @@
-package com.example.legoshop.data.local
+package com.example.legoshop.data.local.entities.itemlisting
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

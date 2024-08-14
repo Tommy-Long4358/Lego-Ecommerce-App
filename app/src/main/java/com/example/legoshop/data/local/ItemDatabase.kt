@@ -3,18 +3,23 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.legoshop.data.local.entities.account.AccountDao
+import com.example.legoshop.data.local.entities.account.AccountEntity
+import com.example.legoshop.data.local.entities.itemlisting.ItemListingDao
+import com.example.legoshop.data.local.entities.itemlisting.ItemListingEntity
 
 /**
  * Database class with a singleton Instance object
  */
 @Database(
-    entities = [ItemListingEntity::class],
-    version = 1,
+    entities = [ItemListingEntity::class, AccountEntity::class],
+    version = 2,
     exportSchema = false
 )
 abstract class ItemDatabase : RoomDatabase() {
 
     abstract fun itemListingDao(): ItemListingDao
+    abstract fun accountDao(): AccountDao
 
     companion object {
         @Volatile

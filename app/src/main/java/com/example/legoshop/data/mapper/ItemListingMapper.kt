@@ -1,6 +1,6 @@
 package com.example.legoshop.data.mapper
 
-import com.example.legoshop.data.local.ItemListingEntity
+import com.example.legoshop.data.local.entities.itemlisting.ItemListingEntity
 import com.example.legoshop.domain.model.ItemListing
 import com.example.legoshop.presentation.item.ItemListingDetails
 import com.example.legoshop.presentation.item.ItemUiState

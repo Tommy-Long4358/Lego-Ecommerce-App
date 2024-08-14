@@ -9,6 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.example.legoshop.presentation.home.HomeScreen
 import com.example.legoshop.presentation.item.ItemCreateScreen
+import com.example.legoshop.presentation.register.RegistrationScreen
 import com.example.legoshop.ui.theme.LegoShopAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -21,7 +22,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    HomeScreen()
+                    RegistrationScreen()
                 }
             }
         }

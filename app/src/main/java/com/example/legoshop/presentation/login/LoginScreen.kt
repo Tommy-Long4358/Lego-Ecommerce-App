@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -28,98 +29,94 @@ import com.example.legoshop.ui.theme.LegoShopAppTheme
 
 @Composable
 fun LoginScreen(modifier: Modifier = Modifier) {
-    Scaffold(
-        bottomBar = {
-            LoginBottomAppBar()
-        }
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxWidth()
-        ) {
-            Spacer(modifier = Modifier.height(50.dp))
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Image(
-                    painterResource(id = R.drawable.lego_head_1),
-                    contentDescription = ""
-                )
-                Spacer(modifier = Modifier.height(20.dp))
-                Text(
-                    text = "Log In",
-                    fontSize = 40.sp
-                )
-                Spacer(modifier = Modifier.height(20.dp))
-                OutlinedTextField(
-                    value = "",
-                    onValueChange = {},
-                    label = { Text(text = "Email Address") },
-                    modifier = Modifier.width(300.dp)
-                )
-                Spacer(modifier = Modifier.height(20.dp))
-                OutlinedTextField(
-                    value = "",
-                    onValueChange = {},
-                    label = { Text(text = "Password") },
-                    modifier = Modifier.width(300.dp)
-                )
-            }
-            Spacer(modifier = Modifier.height(52.dp))
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Button(
-                    onClick = {},
-                    modifier = Modifier
-                        .height(50.dp)
-                        .width(300.dp),
-                    shape = RoundedCornerShape(8.dp)
-                ) {
-                    Text(text = "Log in")
-                }
-            }
-            Spacer(modifier = Modifier.height(40.dp))
-            Text(
-                text = "forgot password?",
-                fontSize = 16.sp,
-                textAlign = TextAlign.Right,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(end = 50.dp)
-            )
-        }
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(top = 32.dp)
+    ) {
+        LoginBody(modifier = modifier.fillMaxSize())
     }
 }
 
 @Composable
-fun LoginBottomAppBar(modifier: Modifier = Modifier) {
-    BottomAppBar(
-        containerColor = Color.White
-    ){
-        Column(
+fun LoginBody(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(60.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painterResource(id = R.drawable.lego_head_1),
+            contentDescription = null
+        )
 
+        Text(
+            text = "Log In",
+            fontSize = 40.sp
+        )
+
+        CredentialSection()
+
+        SignUpSection(modifier = modifier)
+    }
+}
+
+@Composable
+fun CredentialSection(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(32.dp)
+    ) {
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            label = { Text(text = "Email Address") },
+            modifier = Modifier.width(300.dp)
+        )
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            label = { Text(text = "Password") },
+            modifier = Modifier.width(300.dp)
+        )
+
+        Button(
+            onClick = {},
+            modifier = Modifier
+                .height(50.dp)
+                .width(300.dp),
+            shape = RoundedCornerShape(8.dp)
         ) {
-            Text(
-                text = "Don't have an account?",
-                fontSize = 16.sp,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Text(
-                text = "Sign Up",
-                fontSize = 16.sp,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
-            )
+            Text(text = "Log in")
         }
+
+        Text(
+            text = "forgot password?",
+            fontSize = 16.sp,
+            textAlign = TextAlign.Right,
+            modifier = Modifier.padding(start = 164.dp)
+        )
+    }
+}
+
+@Composable
+fun SignUpSection(modifier: Modifier = Modifier) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Text(
+            text = "Don't have an account?",
+            fontSize = 16.sp,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Text(
+            text = "Sign Up",
+            fontSize = 16.sp,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 

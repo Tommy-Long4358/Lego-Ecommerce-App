@@ -26,9 +26,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -74,6 +78,9 @@ fun HomeScreen(
     Scaffold (
         topBar = {
             HomeTopAppBar(title = "BrickStud")
+        },
+        bottomBar = {
+            HomeBottomAppBar()
         },
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) { innerPadding ->
@@ -310,6 +317,49 @@ fun HomeTopAppBar(
         scrollBehavior = scrollBehavior,
         modifier = modifier
     )
+}
+
+@Composable
+fun HomeBottomAppBar(modifier: Modifier = Modifier) {
+    BottomAppBar {
+        Row(
+            modifier = Modifier.fillMaxSize(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Home,
+                contentDescription = null,
+                modifier = Modifier.size(30.dp).weight(1f)
+            )
+
+            Icon(
+                imageVector = Icons.Filled.Search,
+                contentDescription = null,
+                modifier = Modifier.size(30.dp).weight(1f)
+            )
+
+            Icon(
+                imageVector = Icons.Filled.List,
+                contentDescription = null,
+                modifier = Modifier.size(30.dp).weight(1f)
+            )
+
+            Icon(
+                imageVector = Icons.Filled.AccountCircle,
+                contentDescription = null,
+                modifier = Modifier.size(30.dp).weight(1f)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun HomeBottomAppBarPreview() {
+    LegoShopAppTheme {
+        HomeBottomAppBar()
+    }
 }
 
 @Preview(showBackground = true)

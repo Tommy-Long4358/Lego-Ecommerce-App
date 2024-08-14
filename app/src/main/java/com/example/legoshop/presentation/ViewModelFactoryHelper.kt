@@ -7,6 +7,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.legoshop.ItemApplication
 import com.example.legoshop.presentation.home.HomeViewModel
 import com.example.legoshop.presentation.item.ItemCreateViewModel
+import com.example.legoshop.presentation.register.RegistrationViewModel
 
 
 object ViewModelFactoryHelper {
@@ -17,6 +18,10 @@ object ViewModelFactoryHelper {
 
         initializer {
             ItemCreateViewModel(itemApplication().appModule.itemRepository)
+        }
+
+        initializer {
+            RegistrationViewModel(itemApplication().appModule.authRepository)
         }
     }
 }

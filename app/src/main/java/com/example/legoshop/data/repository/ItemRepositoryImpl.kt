@@ -1,6 +1,6 @@
 package com.example.legoshop.data.repository
 
-import com.example.legoshop.data.local.ItemListingDao
+import com.example.legoshop.data.local.entities.itemlisting.ItemListingDao
 import com.example.legoshop.data.mapper.toItemListing
 import com.example.legoshop.data.mapper.toItemListingEntity
 import com.example.legoshop.domain.model.ItemListing
